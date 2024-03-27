@@ -4,13 +4,20 @@ import telebot
 
 import re
 import requests
-
+from pymongo import MongoClient
 import imgkit
 from dotenv import load_dotenv
+
 user_data = {}
 load_dotenv()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+
+
+mongo_uri = os.getenv('MONGO_URI')
+client = MongoClient(mongo_uri)
+db = client["rozklad-bot"]
+
 
 
 login_url = 'https://rozklad.ztu.edu.ua/login'
@@ -46,29 +53,55 @@ else:
 bot = telebot.TeleBot(BOT_TOKEN)
 
 
-
-
-@bot.message_handler(commands=['start', 'hello'])
+@bot.message_handler(commands=['start', 'hello', 'info'])
 def send_welcome(message):
-    bot.reply_to(message, "Доброго дня! Даний бот досі перебуває в розробці. Для зручнішого використання рекомендую використовувати кнопку menu. Якщо знайшли якісь баги, писати @Exzente . Дякую!")
+    chat_id = message.chat.id
+    bot.reply_to(message,
+                 "Доброго дня! Даний бот досі перебуває у розробці. Для зручнішого використання рекомендую використовувати кнопку menu. Якщо знайшли якісь баги, писати @Exzente . Дякую!")
+    bot.send_message(chat_id, 'Введіть вашу групу(Приклад: ІПЗ-21-2):')
+
+    bot.register_next_step_handler(message, save_user_to_db)
 
 
+def save_user_to_db(message):
+    if validate_group(message, message.text) is not True:
+        send_welcome(message)
+        return
+    collection = db["users"]
+    user = {"id": message.chat.id, "group": message.text}
+    collection.insert_one(user)
 
+
+@bot.message_handler(commands=['my_rozklad'])
+def my_rozklad(message):
+    chat_id = message.chat.id
+    collection = db["users"]
+    user = collection.find_one({"id": chat_id})
+    if user is None:
+        bot.send_message('Вас ще немає в базі даних бота!')
+    else:
+        group = user["group"]
+        #print(group)
+        generate_pdf(message, str(group))
 @bot.message_handler(commands=['rozklad'])
 def rozklad(message):
     chat_id = message.chat.id
     print(message.text)
+    print('-------chat_id-------')
     print(chat_id)
+    print('---------------------')
+    print(message.chat.username)
+    print('---------------------')
     bot.send_message(chat_id, 'Введіть групу (Приклад: ІПЗ-21-2):')
     bot.register_next_step_handler(message, generate_pdf)
 
-
-def generate_pdf(message):
+def generate_pdf(message, group=None):
     chat_id = message.chat.id
+    if group is None:
+        group = message.text
     try:
-        response = requests.get(f"https://rozklad.ztu.edu.ua/schedule/group/{message.text}", cookies=cookies)
-        if 'Сторінку не зайдено' in response.text:
-            bot.send_message(chat_id, 'Невірно введено групу!')
+        response = requests.get(f"https://rozklad.ztu.edu.ua/schedule/group/{group}", cookies=cookies)
+        if validate_group(message, group) is not True:
             return
         with open('style.css', "r", encoding="utf-8") as css:
             css_text = css.read()
@@ -85,7 +118,7 @@ def generate_pdf(message):
                 temp = re.sub(r'<h2>ІІ тиждень</h2>(.*?)</table>', "", temp, flags=re.DOTALL)
             else:
                 temp = re.sub(r'<h2>І тиждень</h2>(.*?)</table>', "", temp, flags=re.DOTALL)
-
+            temp = re.sub(r'<footer.*?>(.*?)</footer>', '', temp, flags=re.DOTALL)
             # print(temp)
             file.write(temp)
         file.close()
@@ -101,5 +134,12 @@ def generate_pdf(message):
         os.remove('tmp/rozklad.jpg')
         os.remove('tmp/output.html')
 
+def validate_group(message, group):
+    chat_id = message.chat.id
+    response = requests.get(f"https://rozklad.ztu.edu.ua/schedule/group/{group}", cookies=cookies)
+    if 'Сторінку не зайдено' in response.text:
+        bot.send_message(chat_id, 'Невірно введено групу!')
+        return False
+    return True
 
 bot.infinity_polling()
