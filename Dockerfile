@@ -1,10 +1,15 @@
-FROM python:3.11.8-alpine
+FROM ubuntu:latest
 LABEL authors="yarik"
+ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR src
 COPY src .
-
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip
 RUN pip install -r requirements.txt
-RUN apk add curl
-ENV BOT_TOKEN=6886731884:AAHam_L4OFYPJkzabAoUyFYHi-2QY37AqwQ
+RUN apt-get update && \
+    apt-get install -y wkhtmltopdf && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["python", "bot.py"]
+
+CMD ["python3", "bot.py"]
