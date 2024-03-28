@@ -6,9 +6,8 @@ import requests
 from pymongo import MongoClient
 
 from dotenv import load_dotenv
-from src.scripts.validators import validate_group
-from src.scripts.generate_png import generate_png
-from src.scripts.cleantmp import clean_tmp
+from scripts.validators import validate_group
+from scripts.generate_png.generate_png import generate_png
 
 user_data = {}
 load_dotenv()
@@ -114,15 +113,20 @@ def send_png(message, group=None):
     chat_id = message.chat.id
     if group is None:
         group = message.text
-    if generate_png(group, cookies) is not True:
+    if validate_group(cookies, group) is not True:
         bot.send_message(chat_id, 'Не коректні дані!')
         return
     bot.send_message(chat_id, 'Ваш розклад рендериться!')
-    with open('../tmp/rozklad.jpg', 'rb') as file:
+    if generate_png(group, cookies) is not True:
+        bot.send_message(chat_id, 'Не коректні дані!')
+        return
+    generate_png(group, cookies)
+
+    with open('tmp/rozklad.jpg', 'rb') as file:
 
         bot.send_photo(chat_id, file)
         file.close()
-    clean_tmp()
+    #clean_tmp()
 
 
 bot.infinity_polling()

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Розклад групи МО-66</title>
+    <link rel="stylesheet" href="/templates/css/style.css?4"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="/js/user.js"></script>
+</head>
+<body>
+<div class="navbar-fixed">
+    <nav class="blue darken-4 z-depth-2" role="navigation">
+        <div class="nav-wrapper container">
+            <a href="/" class="brand-logo" style="font-size:18px; white-space: nowrap">Розклад занять Житомирської політехніки</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                            </ul>
+        </div>
+    </nav>
+</div>
+<div style="margin:0 20px;">
+    <h2 style="font-size:1.5em !important; color: red;">Увага! Розклад коректується. Слідкуйте за змінами.</h2>
+    <style>.room.changed {
+    color: red;
+    font-size:14px;
+}
+
+body {
+    font-family: Arial;
+}
+h1 {
+    font-size:3rem !important;
+}
+h2 {
+    font-size:2rem !important;
+}
+table.schedule{
+    border-collapse: collapse;
+    margin:3px;
+   width: 100%;
+    box-sizing: border-box;
+}
+
+.collection a {
+    color: black !important;
+    font-size: 0.9em;
+}
+.badge {
+    margin-left: 0 !important;
+}
+
+@media (max-width:1280px) {
+    .container {width: 95% !important;}
+}
+@media (min-width:992px){
+    .auto-clear .l1:nth-child(12n+1){clear:left;}
+    .auto-clear .l2:nth-child(6n+1){clear:left;}
+    .auto-clear .l3:nth-child(4n+1){clear:left;}
+    .auto-clear .l4:nth-child(3n+1){clear:left;}
+    .auto-clear .l6:nth-child(odd){clear:left;}
+}
+@media (min-width:600px) and (max-width:991px){
+    .container {width: 100%;}
+    .auto-clear .m1:nth-of-type(12n+1){clear:left;}
+    .auto-clear .m2:nth-of-type(6n+1){clear:left;}
+    .auto-clear .m3:nth-of-type(4n+1){clear:left;}
+    .auto-clear .m4:nth-of-type(3n+2){clear:left;}
+    .auto-clear .m6:nth-of-type(odd){clear:left;}
+}
+@media (max-width:600px){
+    .collection-item {padding-left: 8px !important;}
+    .container {width: 100%;}
+    .auto-clear .s1:nth-of-type(12n+1){clear:left;}
+    .auto-clear .s2:nth-of-type(6n+1){clear:left;}
+    .auto-clear .s3:nth-of-type(4n+1){clear:left;}
+    .auto-clear .s4:nth-of-type(3n+1){clear:left;}
+    .auto-clear .s6:nth-of-type(2n){clear:left;}
+}
+
+table.schedule .subgroups {
+    display: flex;
+    flex-direction: row;
+}
+table.schedule .subgroups > div{
+    flex: 1 1;
+}
+table.schedule .subgroups > div:first-child {
+    border-right: 1px dotted gray;
+}
+table.schedule th {
+    background-color: #045AA5;
+    color: white;
+    text-align: center;
+    padding: 3px 10px;
+    font-size: 11px;
+}
+table.schedule th:first-child {
+    width:40px !important;
+}
+table.schedule td {
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 3px 10px;
+    font-size: 11px;
+    /*width: 100%;*/
+
+}
+table.schedule td.content {
+    background-color: #FFF8B9;
+
+}
+.ccc {
+    background-color: rgba(255, 248, 185, 0.51);
+}
+table.schedule td, table.schedule th {
+    border: 1px solid #CCC;
+    padding: 3px;
+}
+table.schedule td.content {
+    background-color: #FFF8B9;
+}
+table.schedule .subject {
+    font-weight: bold;
+    font-size:1.1em;
+    margin:4px 0 4px 0;
+}
+table.schedule .room {
+    font-weight: bold;
+    white-space: nowrap;
+}
+table.schedule .teacher {
+    font-style: italic;
+    margin: 4px 0 0 0;
+}
+table.schedule td:nth-child(2), table.schedule td:nth-child(3), table.schedule td:nth-child(4), table.schedule td:nth-child(5), table.schedule td:nth-child(6), table.schedule td:nth-child(7)
+{
+    width: 19%;
+}
+h1, h2{
+    text-align: center;
+}
+h2 {
+    margin-bottom:2px;
+}
+#modal {
+    display: none;
+    position: fixed;
+    left:50%;
+    top:50%;
+    width:700px;
+    height:500px;
+    margin-left: -350px;
+    background: white;
+    border:2px solid gray;
+    overflow: auto;
+}
+#modal .items {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.icon-block {
+    padding: 0 15px;
+}
+.icon-block .material-icons {
+    font-size: inherit;
+}
+table
+{
+    border-collapse: collapse;
+}
+table td, table th {
+    padding:5px;
+    word-wrap: break-word;
+
+}
+p.back {
+    margin-top: 4ex;
+    margin-bottom: 5ex;
+}
+
+table {
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+table.odd_table {
+    page-break-before: always;
+}
+
+table.even_table {
+    page-break-before: always;
+}
+
+table.detailed {
+    margin-left:auto; margin-right:auto;
+    text-align: center;
+    border: 0px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.foot {
+    display: none;
+}
+caption {
+
+}
+
+thead {
+
+}
+
+/* Деякі програми імпорту "tfoot" неправильно. Тому ми використовуємо "tr.foot" замість "tfoot". */
+
+tr.foot {
+
+}
+
+tbody {
+
+}
+
+th {
+
+}
+
+td {
+
+}
+
+td.detailed {
+    border: 1px dashed silver;
+    border-bottom: 0;
+    border-top: 0;
+}
+
+th.xAxis {
+    /* width: 8em; */
+}
+
+th.yAxis {
+    height: 8ex;
+}
+
+/* Style the teachers' free periods */
+
+div.DESCRIPTION {
+    text-align: left;
+    font-size: smaller;
+}
+.blue a {
+    color: white;
+}
+a:hover {
+    text-decoration: underline;
+}
+.rooms-list {display: flex; justify-content: flex-start; flex-wrap: wrap; }
+.rooms-list li {width: 200px;}
+.room {white-space: nowrap;}
+div.variative:nth-child(2)
+{
+    padding-top:5px;
+    border-top:1px dotted #c3c3c3;
+    margin-top:5px;
+}
+@media screen and (max-width: 992px) {
+
+}
+
+    td.selected.content {
+
+        background-color: #ffd15e !important;
+
+    }
+
+    td.selected:not(.content) {
+
+        background-color: rgba(255, 209, 94, 0.45) !important;
+
+    }
+
+    th.selected{
+
+        position: relative;
+
+    }
+
+    th.selected .message {
+
+        position:absolute;
+
+        top:-25px;
+
+        color: red;
+
+        height:40px;
+
+        left: 0;
+
+        right: 0;
+
+        text-align: center;
+
+        border-radius:50%;
+
+        border-style: dashed;
+
+        border-color: red;
+
+        border-width:3px;
+
+        border-bottom-width: 0;
+
+        border-left-width: 0;
+
+        font-size:1.8em;
+
+        line-height: 1em;
+
+        border-right-width: 0;
+
+    }
+
+    h2 {
+
+        margin-bottom:30px;
+
+    }
+
+    @media print {
+
+        .navbar-fixed { display: none; }
+
+        td, th {
+
+            padding: 1px;
+
+        }
+
+        .schedule {
+
+            page-break-after: always;
+
+        }
+
+        .page-footer {
+
+            display: none;
+
+        }
+
+    }</style>
+    <div style="float:left; display: none;">
+    <a href="https://rozklad.ztu.edu.ua/schedule/group/МО-66?print"></a>
+    </div>
+    <div style="float:right; display: none;">
+    <a href="https://rozklad.ztu.edu.ua/schedule/group/МО-66?print"></a>
+    </div>
+    <div style="display: none;position: fixed; top: 5px; right: 5px; z-index: 10000;">
+        <a href="https://rozklad.ztu.edu.ua/schedule/group/МО-66?print"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Oxygen480-actions-document-preview.svg/240px-Oxygen480-actions-document-preview.svg.png" style="width:50px;"/></a>
+        <a href="https://rozklad.ztu.edu.ua/gener/generate_group_schedule_for_print.php?group=МО-66"></a>
+       <!-- <a href="https://rozklad.ztu.edu.ua/gener/generate_group_schedule_for_bot.php?group=МО-66&week=1"><img src="https://www.agreenskills.eu/var/plain_site/storage/images/media/images/08958ffa3c159fec2a0069bf8b018de9_format-pdf-icon-png-clipart-pdf-icon-clipart_482-486/9071-1-eng-GB/08958ffa3c159fec2a0069bf8b018de9_format-pdf-icon-png-clipart-pdf-icon-clipart_482-486_large.png" style="width:50px;"/></a>-->
+    </div>
+    <h1>Розклад групи МО-66</h1>
+    
+
+<h2>ІІ тиждень</h2>
+<table class="schedule">
+    <tr>
+        <th></th>
+                        <th>Понеділок</th>
+                                <th>Вівторок</th>
+                                <th>Середа</th>
+                                <th class="selected"><div class="message">сьогодні</div>Четвер</th>
+                                <th>П'ятниця</th>
+                                <th>Субота</th>
+                    </tr>
+            <tr>
+            <th>8:30-9:50</th>
+                                    <td day="Понеділок 2" hour="8:30-9:50" class="">
+                                    </td>
+                                    <td day="Вівторок 2" hour="8:30-9:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Маркетингова товарна політика</div>
+     <div>Лекція,ауд. <span class="room  changed ">
+                          233              </span>
+     </div>
+     <div class="teacher">Виговська Олена Анатоліївна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Середа 2" hour="8:30-9:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Четвер 2" hour="8:30-9:50" class="content selected">
+                                            <div class="variative">
+                            <div></div>
+     <div class="subject">Маркетингова товарна політика</div>
+     <div>Практика,ауд. <span class="room  changed ">
+                          233              </span>
+     </div>
+     <div class="teacher">Виговська Олена Анатоліївна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="П'ятниця 2" hour="8:30-9:50" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="8:30-9:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                    </tr>
+            <tr>
+            <th>10:00-11:20</th>
+                                    <td day="Понеділок 2" hour="10:00-11:20" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Менеджмент та адміністрування бізнесу</div>
+     <div>Лекція,ауд. <span class="room  changed ">
+                          Нов.корп. 2019              </span>
+     </div>
+     <div class="teacher">Жалінська Ірина Володимирівна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Вівторок 2" hour="10:00-11:20" class="content">
+                                            <div class="variative">
+                            <div></div>
+     <div class="subject">Іноземна мова (за професійним спрямуванням)</div>
+     <div>Лабораторна,ауд. <span class="room  changed ">
+                          132              </span>
+     </div>
+     <div class="teacher">Макаревич Олег Олександрович</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Середа 2" hour="10:00-11:20" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Четвер 2" hour="10:00-11:20" class="content selected">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Самоменеджмент</div>
+     <div>Лекція,ауд. <span class="room  changed ">
+                          244              </span>
+     </div>
+     <div class="teacher">Ткачук Ганна Юріївна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="П'ятниця 2" hour="10:00-11:20" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="10:00-11:20" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                    </tr>
+            <tr>
+            <th>11:40-13:00</th>
+                                    <td day="Понеділок 2" hour="11:40-13:00" class="content">
+                                            <div class="variative">
+                            <div></div>
+     <div class="subject">Менеджмент та адміністрування бізнесу</div>
+     <div>Практика,ауд. <span class="room  changed ">
+                          326-А              </span>
+     </div>
+     <div class="teacher">Сотник Ангеліна Анатоліївна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Вівторок 2" hour="11:40-13:00" class="content">
+                                            <div class="variative">
+                            <div></div>
+     <div class="subject">Управління рітейл-технологіями</div>
+     <div>Практика,ауд. <span class="room  changed ">
+                          138              </span>
+     </div>
+     <div class="teacher">Бужимська Катерина Олександрівна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Середа 2" hour="11:40-13:00" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Четвер 2" hour="11:40-13:00" class="content selected">
+                                            <div class="variative">
+                            <div></div>
+     <div class="subject">Іноземна мова (за професійним спрямуванням)</div>
+     <div>Лабораторна,ауд. <span class="room  changed ">
+                          320              </span>
+     </div>
+     <div class="teacher">Макаревич Олег Олександрович</div>
+                                                            </div>
+                                    </td>
+                                    <td day="П'ятниця 2" hour="11:40-13:00" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="11:40-13:00" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                    </tr>
+            <tr>
+            <th>13:30-14:50</th>
+                                    <td day="Понеділок 2" hour="13:30-14:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Управління рітейл-технологіями</div>
+     <div>Лекція,ауд. <span class="room  changed ">
+                          325              </span>
+     </div>
+     <div class="teacher">Бужимська Катерина Олександрівна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Вівторок 2" hour="13:30-14:50" class="content">
+                                            <div class="variative">
+                            <div></div>
+     <div class="subject">Самоменеджмент</div>
+     <div>Практика,ауд. <span class="room  changed ">
+                          312              </span>
+     </div>
+     <div class="teacher">Ткачук Ганна Юріївна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Середа 2" hour="13:30-14:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room  changed ">
+                          Дистанційно 114              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Четвер 2" hour="13:30-14:50" class="selected">
+                                    </td>
+                                    <td day="П'ятниця 2" hour="13:30-14:50" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="13:30-14:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                    </tr>
+            <tr>
+            <th>15:00-16:20</th>
+                                    <td day="Понеділок 2" hour="15:00-16:20" class="">
+                                    </td>
+                                    <td day="Вівторок 2" hour="15:00-16:20" class="">
+                                    </td>
+                                    <td day="Середа 2" hour="15:00-16:20" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Четвер 2" hour="15:00-16:20" class="selected">
+                                    </td>
+                                    <td day="П'ятниця 2" hour="15:00-16:20" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="15:00-16:20" class="">
+                                    </td>
+                    </tr>
+            <tr>
+            <th>16:30-17:50</th>
+                                    <td day="Понеділок 2" hour="16:30-17:50" class="">
+                                    </td>
+                                    <td day="Вівторок 2" hour="16:30-17:50" class="">
+                                    </td>
+                                    <td day="Середа 2" hour="16:30-17:50" class="content">
+                                            <div class="variative">
+                            ----------------
+     <div class="subject">Вибіркові дисципліни</div>
+     <div>Лекція,ауд. <span class="room ">
+                          Дистанційно 164              </span>
+     </div>
+     <div class="teacher">Вибіркова дисципліна</div>
+                                                            </div>
+                                    </td>
+                                    <td day="Четвер 2" hour="16:30-17:50" class="selected">
+                                    </td>
+                                    <td day="П'ятниця 2" hour="16:30-17:50" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="16:30-17:50" class="">
+                                    </td>
+                    </tr>
+            <tr>
+            <th>18:00-19:20</th>
+                                    <td day="Понеділок 2" hour="18:00-19:20" class="">
+                                    </td>
+                                    <td day="Вівторок 2" hour="18:00-19:20" class="">
+                                    </td>
+                                    <td day="Середа 2" hour="18:00-19:20" class="">
+                                    </td>
+                                    <td day="Четвер 2" hour="18:00-19:20" class="selected">
+                                    </td>
+                                    <td day="П'ятниця 2" hour="18:00-19:20" class="">
+                                    </td>
+                                    <td day="Субота 2" hour="18:00-19:20" class="">
+                                    </td>
+                    </tr>
+    </table>
+<style>.room.changed {
+    color: red;
+    font-size:14px;
+}
+
+body {
+    font-family: Arial;
+}
+h1 {
+    font-size:3rem !important;
+}
+h2 {
+    font-size:2rem !important;
+}
+table.schedule{
+    border-collapse: collapse;
+    margin:3px;
+   width: 100%;
+    box-sizing: border-box;
+}
+
+.collection a {
+    color: black !important;
+    font-size: 0.9em;
+}
+.badge {
+    margin-left: 0 !important;
+}
+
+@media (max-width:1280px) {
+    .container {width: 95% !important;}
+}
+@media (min-width:992px){
+    .auto-clear .l1:nth-child(12n+1){clear:left;}
+    .auto-clear .l2:nth-child(6n+1){clear:left;}
+    .auto-clear .l3:nth-child(4n+1){clear:left;}
+    .auto-clear .l4:nth-child(3n+1){clear:left;}
+    .auto-clear .l6:nth-child(odd){clear:left;}
+}
+@media (min-width:600px) and (max-width:991px){
+    .container {width: 100%;}
+    .auto-clear .m1:nth-of-type(12n+1){clear:left;}
+    .auto-clear .m2:nth-of-type(6n+1){clear:left;}
+    .auto-clear .m3:nth-of-type(4n+1){clear:left;}
+    .auto-clear .m4:nth-of-type(3n+2){clear:left;}
+    .auto-clear .m6:nth-of-type(odd){clear:left;}
+}
+@media (max-width:600px){
+    .collection-item {padding-left: 8px !important;}
+    .container {width: 100%;}
+    .auto-clear .s1:nth-of-type(12n+1){clear:left;}
+    .auto-clear .s2:nth-of-type(6n+1){clear:left;}
+    .auto-clear .s3:nth-of-type(4n+1){clear:left;}
+    .auto-clear .s4:nth-of-type(3n+1){clear:left;}
+    .auto-clear .s6:nth-of-type(2n){clear:left;}
+}
+
+table.schedule .subgroups {
+    display: flex;
+    flex-direction: row;
+}
+table.schedule .subgroups > div{
+    flex: 1 1;
+}
+table.schedule .subgroups > div:first-child {
+    border-right: 1px dotted gray;
+}
+table.schedule th {
+    background-color: #045AA5;
+    color: white;
+    text-align: center;
+    padding: 3px 10px;
+    font-size: 11px;
+}
+table.schedule th:first-child {
+    width:40px !important;
+}
+table.schedule td {
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 3px 10px;
+    font-size: 11px;
+    /*width: 100%;*/
+
+}
+table.schedule td.content {
+    background-color: #FFF8B9;
+
+}
+.ccc {
+    background-color: rgba(255, 248, 185, 0.51);
+}
+table.schedule td, table.schedule th {
+    border: 1px solid #CCC;
+    padding: 3px;
+}
+table.schedule td.content {
+    background-color: #FFF8B9;
+}
+table.schedule .subject {
+    font-weight: bold;
+    font-size:1.1em;
+    margin:4px 0 4px 0;
+}
+table.schedule .room {
+    font-weight: bold;
+    white-space: nowrap;
+}
+table.schedule .teacher {
+    font-style: italic;
+    margin: 4px 0 0 0;
+}
+table.schedule td:nth-child(2), table.schedule td:nth-child(3), table.schedule td:nth-child(4), table.schedule td:nth-child(5), table.schedule td:nth-child(6), table.schedule td:nth-child(7)
+{
+    width: 19%;
+}
+h1, h2{
+    text-align: center;
+}
+h2 {
+    margin-bottom:2px;
+}
+#modal {
+    display: none;
+    position: fixed;
+    left:50%;
+    top:50%;
+    width:700px;
+    height:500px;
+    margin-left: -350px;
+    background: white;
+    border:2px solid gray;
+    overflow: auto;
+}
+#modal .items {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.icon-block {
+    padding: 0 15px;
+}
+.icon-block .material-icons {
+    font-size: inherit;
+}
+table
+{
+    border-collapse: collapse;
+}
+table td, table th {
+    padding:5px;
+    word-wrap: break-word;
+
+}
+p.back {
+    margin-top: 4ex;
+    margin-bottom: 5ex;
+}
+
+table {
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+table.odd_table {
+    page-break-before: always;
+}
+
+table.even_table {
+    page-break-before: always;
+}
+
+table.detailed {
+    margin-left:auto; margin-right:auto;
+    text-align: center;
+    border: 0px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.foot {
+    display: none;
+}
+caption {
+
+}
+
+thead {
+
+}
+
+/* Деякі програми імпорту "tfoot" неправильно. Тому ми використовуємо "tr.foot" замість "tfoot". */
+
+tr.foot {
+
+}
+
+tbody {
+
+}
+
+th {
+
+}
+
+td {
+
+}
+
+td.detailed {
+    border: 1px dashed silver;
+    border-bottom: 0;
+    border-top: 0;
+}
+
+th.xAxis {
+    /* width: 8em; */
+}
+
+th.yAxis {
+    height: 8ex;
+}
+
+/* Style the teachers' free periods */
+
+div.DESCRIPTION {
+    text-align: left;
+    font-size: smaller;
+}
+.blue a {
+    color: white;
+}
+a:hover {
+    text-decoration: underline;
+}
+.rooms-list {display: flex; justify-content: flex-start; flex-wrap: wrap; }
+.rooms-list li {width: 200px;}
+.room {white-space: nowrap;}
+div.variative:nth-child(2)
+{
+    padding-top:5px;
+    border-top:1px dotted #c3c3c3;
+    margin-top:5px;
+}
+@media screen and (max-width: 992px) {
+
+}
+
+    td.selected.content {
+
+        background-color: #ffd15e !important;
+
+    }
+
+    td.selected:not(.content) {
+
+        background-color: rgba(255, 209, 94, 0.45) !important;
+
+    }
+
+    th.selected{
+
+        position: relative;
+
+    }
+
+    th.selected .message {
+
+        position:absolute;
+
+        top:-25px;
+
+        color: red;
+
+        height:40px;
+
+        left: 0;
+
+        right: 0;
+
+        text-align: center;
+
+        border-radius:50%;
+
+        border-style: dashed;
+
+        border-color: red;
+
+        border-width:3px;
+
+        border-bottom-width: 0;
+
+        border-left-width: 0;
+
+        font-size:1.8em;
+
+        line-height: 1em;
+
+        border-right-width: 0;
+
+    }
+
+    h2 {
+
+        margin-bottom:30px;
+
+    }
+
+    @media print {
+
+        .navbar-fixed { display: none; }
+
+        td, th {
+
+            padding: 1px;
+
+        }
+
+        .schedule {
+
+            page-break-after: always;
+
+        }
+
+        .page-footer {
+
+            display: none;
+
+        }
+
+    }</style></div>
+
+
+
+</body>
+</html>

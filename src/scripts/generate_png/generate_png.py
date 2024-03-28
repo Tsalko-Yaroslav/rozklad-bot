@@ -2,21 +2,20 @@ import os
 import imgkit
 import re
 import requests
-from src.scripts.validators import validate_group
+
 
 def generate_png(group, cookies):
-
     try:
         response = requests.get(f"https://rozklad.ztu.edu.ua/schedule/group/{group}", cookies=cookies)
-        if validate_group(cookies, group) is not True:
-            return False
 
-        with open('../static/style.css', "r", encoding="utf-8") as css:
+        print(os.getcwd())
+
+        with open('scripts/generate_png/static/css/style.css', "r", encoding="utf-8") as css:
             css_text = css.read()
 
         css.close()
         # print(css_text)
-        with open("../tmp/output.html", "w", encoding="utf-8") as file:
+        with open("tmp/output.html", "w", encoding="utf-8") as file:
 
             temp = re.sub(r"<style.*?>(.*?)</style>", f"<style>{css_text}</style>", response.text, flags=re.DOTALL)
             temp = re.sub(r'<div>[\w\d\s,-]+<\/div>', f"----------------", temp, flags=re.DOTALL)
@@ -31,7 +30,7 @@ def generate_png(group, cookies):
             file.write(temp)
         file.close()
 
-        imgkit.from_file('../tmp/output.html', '../tmp/rozklad.jpg')
+        imgkit.from_file('tmp/output.html', 'tmp/rozklad.jpg')
     except Exception as e:
 
         print("An error occurred:")
