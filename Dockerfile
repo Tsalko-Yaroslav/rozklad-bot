@@ -12,4 +12,4 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 
-CMD ["python3", "bot.py"]
+CMD ["python3", "./bot/main.py"]
