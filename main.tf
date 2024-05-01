@@ -6,7 +6,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "terraform-bucket-rozklad-bot"
-    key    = "tfstate"
+    key    = "terraform.tfstate"
     region = "eu-central-1"
   }
 }
