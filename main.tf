@@ -8,11 +8,11 @@ provider "aws" {
 
 }
 module "ecr" {
-  source = "tfmodules/ecr"
+  source = "./tfmodules/ecr"
 }
 module "vpc" {
-  source = "tfmodules/vpc"
+  source = "./tfmodules/vpc"
 }
 module "ecs" {
-  source = "tfmodules/ecs"
+  source = "./tfmodules/ecs"
 }
