@@ -3,13 +3,7 @@ provider "aws" {
   region = "eu-central-1"
 
 }
-terraform {
-  backend "s3" {
-    bucket = "terraform-bucket-rozklad-bot-1"
-    key    = "terraform.tfstate"
-    region = "eu-central-1"
-  }
-}
+
 module "ecr" {
   source = "./tfmodules/ecr"
 }
