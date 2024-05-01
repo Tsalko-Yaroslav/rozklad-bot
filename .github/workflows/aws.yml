@@ -16,13 +16,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Change dir
-        run: cd terraform
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.1.0
-        working-directory: terraform/
+        
       - name: Initialize Terraform
         run: terraform init
 
