@@ -1,5 +1,5 @@
 # rozklad-bot project
-## Engilish
+## English
 ## deployment guide
 
 There is also Dockerfile, no exposing ports or serviers needed.
