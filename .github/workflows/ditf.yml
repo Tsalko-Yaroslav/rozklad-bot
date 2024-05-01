@@ -1,6 +1,6 @@
 
 
-name: Deploy to Amazon ECS
+name: Deploy infrastructure with terraform
 
 on:
   push:
