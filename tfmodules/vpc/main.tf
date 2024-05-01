@@ -66,7 +66,7 @@ resource "aws_internet_gateway" "rozklad-bot-igw" {
     Name = "Rozklad-bot-igw"
   }
 }
-resource "aws_route_table" "AnsibleTask_route-table" {
+resource "aws_route_table" "rozklad-bot-route-table" {
   vpc_id = aws_vpc.rozklad-bot-vpc.id
 
   route {
@@ -75,12 +75,12 @@ resource "aws_route_table" "AnsibleTask_route-table" {
   }
 
   tags = {
-    Name = "Rozklad-bot-rt"
+    Name = "rozklad-bot-rt"
   }
 }
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.rozklad-bot-subnet.id
-  route_table_id = aws_route_table.AnsibleTask_route-table.id
+  route_table_id = aws_route_table.rozklad-bot-route-table.id
 }
 output "subnet_id" {
   value = aws_subnet.rozklad-bot-subnet.id
