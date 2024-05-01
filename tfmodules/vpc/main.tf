@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-cental-1"
+  region = "eu-central-1"
 }
 
 resource "aws_vpc" "rozklad-bot-vpc" {
