@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "rozklad-bot-vpc" {
-  cidr_block = "10.0.0.1/16"
+  cidr_block = "10.0.0.0/1"
   instance_tenancy     = "default"
   enable_dns_hostnames = "true"
   tags = {
