@@ -32,8 +32,8 @@ resource "aws_ecs_service" "rozklad-bot-service" {
   desired_count   = 1
   launch_type     = "FARGATE"
   network_configuration {
-    subnets         = module.vpc.subnet_id
-    security_groups = module.vpc.sg_id
+    subnets         = [module.vpc.subnet_id]
+    security_groups = [module.vpc.sg_id]
     assign_public_ip = true
   }
 }
