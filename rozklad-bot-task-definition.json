@@ -1,20 +1,43 @@
 {
-    "family": "rozklad-bot-family",
-    "taskRoleArn": "",
-    "executionRoleArn": "",
-    "networkMode": "awsvpc",
+    "taskDefinitionArn": "arn:aws:ecs:eu-central-1:637423518057:task-definition/rozklad-bot-family:12",
     "containerDefinitions": [
         {
             "name": "rozklad-bot-container",
             "image": "placeholder:latest",
             "cpu": 256,
             "memory": 512,
-            "essential": true
+            "portMappings": [],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
         }
+    ],
+    "family": "rozklad-bot-family",
+    "networkMode": "awsvpc",
+    "revision": 12,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
     ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "cpu": "256",
-    "memory": "512"
+    "memory": "512",
+    "registeredAt": "2024-05-02T11:46:36.372Z",
+    "registeredBy": "arn:aws:iam::637423518057:user/terraform",
+    "tags": []
 }
