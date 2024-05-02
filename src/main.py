@@ -53,8 +53,10 @@ bot = telebot.TeleBot(BOT_TOKEN)
 collection = db['users']
 user_data = collection.find({})
 for user in user_data:
-    bot.send_message(user['id'], 'Бот стартанув!')
-
+    try:
+        bot.send_message(user['id'], 'Бот стартанув!')
+    except:
+        continue
 
 @bot.message_handler(commands=['start', 'hello', 'info'])
 def send_welcome(message):
