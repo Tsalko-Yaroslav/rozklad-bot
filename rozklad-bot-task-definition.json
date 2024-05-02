@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-central-1:637423518057:task-definition/rozklad-bot-family:12",
+    "taskDefinitionArn": "arn:aws:ecs:eu-central-1:637423518057:task-definition/rozklad-bot-family:13",
     "containerDefinitions": [
         {
             "name": "rozklad-bot-container",
@@ -15,8 +15,9 @@
         }
     ],
     "family": "rozklad-bot-family",
+    "executionRoleArn": "arn:aws:iam::637423518057:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 12,
+    "revision": 13,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -37,7 +38,7 @@
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2024-05-02T11:46:36.372Z",
+    "registeredAt": "2024-05-02T12:19:06.590Z",
     "registeredBy": "arn:aws:iam::637423518057:user/terraform",
     "tags": []
 }
