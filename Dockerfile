@@ -1,4 +1,4 @@
-FROM python3.12-ubuntu
+FROM exzenter/python2.12-ubuntu:v1.0
 LABEL authors="yarik"
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR src
