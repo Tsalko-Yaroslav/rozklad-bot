@@ -1,0 +1,15 @@
+{
+  "family": "rozklad-bot-family",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "containerDefinitions": [
+    {
+      "name": "rozklad-bot-container",
+      "image": "placeholder:latest",
+      "cpu": 256,
+      "memory": 512
+    }
+  ]
+}

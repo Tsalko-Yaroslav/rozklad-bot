@@ -18,13 +18,14 @@ resource "aws_ecs_task_definition" "rozklad-bot-task-definition" {
   container_definitions = jsonencode([
     {
       name      = "rozklad-bot-container"
-      image     = "ubuntu:latest"
+      image     = "placeholder:latest"
       cpu       = 256
       memory    = 512
     }
 
   ])
 }
+
 resource "aws_ecs_service" "rozklad-bot-service" {
   name            = "rozklad-bot-service"
   cluster         = aws_ecs_cluster.rozklad-bot-cluster.id
